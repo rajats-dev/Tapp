@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import React, { useState } from "react";
 import { SingInFlow } from "../types";
 import GenderCheckbox from "@/components/GenderCheckbox";
