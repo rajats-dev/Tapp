@@ -1,10 +1,9 @@
 "use client";
-// import MessageInput from "./MessageInput";
-// import Messages from "./Messages";
 
 import { useAuthContext } from "../../context/AuthContext";
 import useConversation from "@/hooks/state/useConversation";
 import { MessageCircle } from "lucide-react";
+import Messages from "./Messages";
 
 const MessageContainer = () => {
   const { selectedConversation } = useConversation();
@@ -23,7 +22,7 @@ const MessageContainer = () => {
             </span>
           </div>
 
-          {/* <Messages /> */}
+          <Messages />
           {/* <MessageInput /> */}
         </>
       )}
