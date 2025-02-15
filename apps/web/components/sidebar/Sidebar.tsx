@@ -1,6 +1,7 @@
 import React from "react";
 import SearchInput from "./SearchInput";
 import { Separator } from "../ui/separator";
+import UserConversations from "./UserConversations";
 
 const Sidebar = () => {
   return (
@@ -8,8 +9,7 @@ const Sidebar = () => {
       <SearchInput />
       <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-4" />
       <div className="divider px-3" />
-      {/* <Conversations /> */}
-      {/* <LogoutButton /> */}
+      <UserConversations />
     </div>
   );
 };

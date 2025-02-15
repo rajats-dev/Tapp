@@ -10,7 +10,12 @@ const app: Application = express();
 const PORT = process.env.PORT || 7000;
 
 // * Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL, // Replace with your frontend domain
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -43,7 +43,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const fetchAuthUser = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${AUTH_USER}/me`);
+        const res = await fetch(`${AUTH_USER}/me`, {
+          credentials: "include",
+        });
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error);
@@ -60,7 +62,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     fetchAuthUser();
   }, []);
 
-  console.log("Context", authUser);
+  // console.log("Context", authUser);
 
   return (
     <AuthContext.Provider

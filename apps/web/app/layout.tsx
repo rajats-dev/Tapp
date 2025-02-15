@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import AuthContextProvider from "@/context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
+          <Toaster />
         </AuthContextProvider>
       </body>
     </html>
