@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { SingInFlow } from "../types";
 import GenderCheckbox from "@/components/GenderCheckbox";
+import useSignUp from "@/hooks/useSignUp";
 
 interface SignUpCardProps {
   setState: (state: SingInFlow) => void;
@@ -23,13 +24,15 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
     confirmPassword: "",
     gender: "",
   });
-  const handleCheckboxChange = (gender: "male" | "female") => {
+  const { loading, signup } = useSignUp();
+
+  const handleCheckboxChange = (gender: "MALE" | "FEMALE") => {
     setInputs({ ...inputs, gender });
   };
 
   const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    // signup(inputs);
+    signup(inputs);
   };
 
   return (
@@ -66,35 +69,25 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             type="password"
             required
           />
+          <Input
+            disabled={false}
+            value={inputs.confirmPassword}
+            onChange={(e) =>
+              setInputs({ ...inputs, confirmPassword: e.target.value })
+            }
+            placeholder="Confirm Password"
+            type="password"
+            required
+          />
 
           <GenderCheckbox
             selectedGender={inputs.gender}
             onCheckboxChange={handleCheckboxChange}
           />
-          <Button type="submit" size="lg" disabled={false} className="w-full">
+          <Button type="submit" size="lg" disabled={loading} className="w-full">
             Continue
           </Button>
           <div>
-            {/* <Button
-              disabled={false}
-              onClick={() => {}}
-              variant="outline"
-              size="lg"
-              className="w-full relative"
-            >
-              <FcGoogle className="size-5 absolute left-2.5" />
-              Continue with Google
-            </Button>
-            <Button
-              disabled={false}
-              onClick={() => {}}
-              variant="outline"
-              size="lg"
-              className="w-full relative"
-            >
-              <FaGithub className="size-5 absolute left-2.5" />
-              Continue with GitHub
-            </Button> */}
             <p className="text-sm text-muted-foreground pt-10">
               Already have an account?{" "}
               <span

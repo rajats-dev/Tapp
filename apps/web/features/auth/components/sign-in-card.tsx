@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import React, { useState } from "react";
 import { SingInFlow } from "../types";
+import useLogin from "@/hooks/useLogin";
 
 interface SignInCardProps {
   setState: (state: SingInFlow) => void;
@@ -21,6 +22,13 @@ const SignInCard = ({ setState }: SignInCardProps) => {
     password: "",
   });
 
+  const { loading, login } = useLogin();
+
+  const handleSubmitForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    login(inputs.username, inputs.password);
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -30,7 +38,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form className="space-y-2.5" onSubmit={handleSubmitForm}>
           <Input
             disabled={false}
             value={inputs.username}
@@ -47,31 +55,11 @@ const SignInCard = ({ setState }: SignInCardProps) => {
             type="password"
             required
           />
-          <Button type="submit" size="lg" disabled={false} className="w-full">
+          <Button type="submit" size="lg" disabled={loading} className="w-full">
             Continue
           </Button>
           <Separator />
           <div className="flex flex-col gap-y-2.5">
-            {/* <Button
-              disabled={false}
-              onClick={() => {}}
-              variant="outline"
-              size="lg"
-              className="w-full relative"
-            >
-              <FcGoogle className="size-5 absolute left-2.5" />
-              Continue with Google
-            </Button>
-            <Button
-              disabled={false}
-              onClick={() => {}}
-              variant="outline"
-              size="lg"
-              className="w-full relative"
-            >
-              <FaGithub className="size-5 absolute left-2.5" />
-              Continue with GitHub
-            </Button> */}
             <p className="text-sm text-muted-foreground">
               Dont&apos;t have an account?{" "}
               <span

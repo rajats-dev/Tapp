@@ -1,4 +1,6 @@
+"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { AUTH_USER } from "@/lib/apiAuthRoutes";
 import {
   createContext,
   Dispatch,
@@ -29,18 +31,19 @@ const AuthContext = createContext<{
 }>({
   authUser: null,
   setAuthUser: () => {},
-  isLoading: true,
+  isLoading: false,
 });
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // logic will go here
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
-        const res = await fetch("/api/auth/me");
+        setIsLoading(true);
+        const res = await fetch(`${AUTH_USER}/me`);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error);
@@ -56,6 +59,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     fetchAuthUser();
   }, []);
+
+  console.log("Context", authUser);
 
   return (
     <AuthContext.Provider
