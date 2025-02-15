@@ -1,29 +1,25 @@
-import useConversation, { MessageType } from "@/hooks/state/useConversation";
+import { MessageType } from "@/hooks/state/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
 import { extractTime } from "@/lib/helper";
 
 const Message = ({ message }: { message: MessageType }) => {
   const { authUser } = useAuthContext();
-  //   const { selectedConversation } = useConversation();
-
   const fromMe = message?.senderId === authUser?.id;
-  const chatClass = fromMe ? "chat-end" : "chat-start";
-  //   const img = fromMe ? authUser?.profilePic : selectedConversation?.profilePic;
-
-  const bubbleBg = fromMe ? "bg-blue-500" : "";
-  // const shakeClass = message.shouldShake ? "shake" : "";
 
   return (
-    <div className={`${chatClass}`}>
-      <div className="hidden md:block ">
-        <div className="w-6 md:w-10 rounded-full">
-          {/* <img alt='Tailwind CSS chat bubble component' src={img} /> */}
-        </div>
-      </div>
-      <p className={`text-white ${bubbleBg}  text-sm md:text-md`}>
+    <div className="flex flex-col w-full my-2">
+      <div
+        className={`flex flex-col max-w-fit rounded-lg py-1 px-4 ${
+          fromMe
+            ? "bg-gradient-to-r from-blue-700 to-blue-800  text-white self-end"
+            : "bg-gradient-to-r from-gray-200 to-gray-300 text-black self-start"
+        }`}
+      >
         {message.body}
-      </p>
-      <span className="chat-footer opacity-50 text-xs flex gap-1 items-center text-white">
+      </div>
+      <span
+        className={`opacity-50 text-xs flex gap-1 items-center text-white ${fromMe ? "self-end" : "self-start"}`}
+      >
         {extractTime(message.createdAt)}
       </span>
     </div>

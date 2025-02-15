@@ -10,7 +10,7 @@ export default function UserAvatar({
   return (
     <Avatar>
       <AvatarImage src={image} />
-      <AvatarFallback>{name}</AvatarFallback>
+      <AvatarFallback>{name[0]}</AvatarFallback>
     </Avatar>
   );
 }

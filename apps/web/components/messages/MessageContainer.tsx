@@ -4,6 +4,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import useConversation from "@/hooks/state/useConversation";
 import { MessageCircle } from "lucide-react";
 import Messages from "./Messages";
+import MessageInput from "./MessageInput";
 
 const MessageContainer = () => {
   const { selectedConversation } = useConversation();
@@ -16,14 +17,14 @@ const MessageContainer = () => {
         <>
           {/* Header */}
           <div className="bg-[#121a27b1] px-4 py-2 mb-2">
-            <span className="label-text">To:</span>{" "}
+            <span>To:</span>{" "}
             <span className="text-white font-bold">
               {selectedConversation?.fullName}
             </span>
           </div>
 
           <Messages />
-          {/* <MessageInput /> */}
+          <MessageInput />
         </>
       )}
     </div>
