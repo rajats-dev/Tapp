@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import AuthContextProvider from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import SocketContextProvider from "@/context/SocketContext";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,14 +30,16 @@ export default function RootLayout({
         )}
       >
         <AuthContextProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            storageKey="discord-theme"
-          >
-            {children}
-          </ThemeProvider>
+          <SocketContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem={false}
+              storageKey="discord-theme"
+            >
+              {children}
+            </ThemeProvider>
+          </SocketContextProvider>
           <Toaster />
         </AuthContextProvider>
       </body>

@@ -1,3 +1,4 @@
+import { useSocketContext } from "@/context/SocketContext";
 import useConversation from "@/hooks/state/useConversation";
 import Image from "next/image";
 
@@ -5,9 +6,8 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
   const { setSelectedConversation, selectedConversation } = useConversation();
   const isSelected = selectedConversation?.id === conversation.id;
 
-  const isOnline = false;
-  // const { onlineUsers } = useSocketContext();
-  // const isOnline = onlineUsers.includes(conversation.id);
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(conversation.id) || false;
 
   return (
     <>
@@ -16,14 +16,17 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
 				 py-1 cursor-pointer ${isSelected ? "bg-sky-500" : ""}`}
         onClick={() => setSelectedConversation(conversation)}
       >
-        <div className={`avatar ${isOnline ? "online" : ""}`}>
-          <div className="w-10 md:w-12 rounded-full">
+        <div>
+          <div className="relative w-10 md:w-12 rounded-full">
             <Image
               src={conversation.profilePic}
               width={40}
               height={25}
               alt="user avatar"
             />
+            <span
+              className={`absolute top-0 right-2 h-2.5 w-2.5 rounded-full bg-green-600  ${!isOnline && "hidden"}`}
+            ></span>
           </div>
         </div>
 

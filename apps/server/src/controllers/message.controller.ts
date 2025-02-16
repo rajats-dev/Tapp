@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/db.config.js";
+import { getReceiverSocketId } from "../socket.js";
+import { io } from "../index.js";
 
 class MessageController {
   static async sendMessage(req: Request, res: Response) {
@@ -48,6 +50,12 @@ class MessageController {
             },
           },
         });
+      }
+
+      const receiverSocketId = getReceiverSocketId(receiverId);
+
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newMessage", newMessage);
       }
 
       res.status(201).json(newMessage);

@@ -1,13 +1,16 @@
 import { MessageType } from "@/hooks/state/useConversation";
 import { useAuthContext } from "../../context/AuthContext";
 import { extractTime } from "@/lib/helper";
+import { useRef } from "react";
 
 const Message = ({ message }: { message: MessageType }) => {
   const { authUser } = useAuthContext();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const fromMe = message?.senderId === authUser?.id;
 
   return (
     <div className="flex flex-col w-full my-2">
+      <div ref={messagesEndRef} />
       <div
         className={`flex flex-col max-w-fit rounded-lg py-1 px-4 ${
           fromMe

@@ -65,3 +65,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* dark mode looking scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0c18302c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0c1552f9;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #242424;
+}
