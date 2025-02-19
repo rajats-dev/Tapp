@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { CHAT_URL } from "@/lib/apiAuthRoutes";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const useGetConversations = () => {
+const useGetConversations = (token: string) => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState<ConversationType[]>([]);
 
@@ -12,6 +13,9 @@ const useGetConversations = () => {
       setLoading(true);
       try {
         const res = await fetch(`${CHAT_URL}/conversations`, {
+          headers: {
+            Authorization: token,
+          },
           credentials: "include",
         });
         const data = await res.json();

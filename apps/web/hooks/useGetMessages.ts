@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import useConversation from "./state/useConversation";
 import { CHAT_URL } from "@/lib/apiAuthRoutes";
 
-const useGetMessages = () => {
+const useGetMessages = (token: string) => {
   const [loading, setLoading] = useState(false);
   const { messages, setMessages, selectedConversation } = useConversation();
 
@@ -15,6 +15,9 @@ const useGetMessages = () => {
       setMessages([]);
       try {
         const res = await fetch(`${CHAT_URL}/${selectedConversation.id}`, {
+          headers: {
+            Authorization: token,
+          },
           credentials: "include",
         });
         const data = await res.json();

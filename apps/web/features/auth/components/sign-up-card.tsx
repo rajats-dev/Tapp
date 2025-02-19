@@ -9,8 +9,9 @@ import {
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { SingInFlow } from "../types";
-import GenderCheckbox from "@/components/GenderCheckbox";
 import useSignUp from "@/hooks/useSignUp";
+import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
 
 interface SignUpCardProps {
   setState: (state: SingInFlow) => void;
@@ -22,21 +23,23 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "",
   });
   const { loading, signup } = useSignUp();
-
-  const handleCheckboxChange = (gender: "MALE" | "FEMALE") => {
-    setInputs({ ...inputs, gender });
-  };
 
   const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
     signup(inputs);
   };
 
+  const handleGoogleLogin = async () => {
+    signIn("google", {
+      redirect: true,
+      callbackUrl: "/client",
+    });
+  };
+
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
         <CardTitle>Sign up to continue</CardTitle>
         <CardDescription>
@@ -44,6 +47,18 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        <div className="flex flex-col gap-2 space-y-4">
+          <Button
+            disabled={false}
+            onClick={handleGoogleLogin}
+            variant="outline"
+            size="lg"
+            className="w-full relative"
+          >
+            <FcGoogle className="size-5 absolute left-2" />
+            Continue with Google
+          </Button>
+        </div>
         <form onSubmit={handleSubmitForm}>
           <Input
             disabled={false}
@@ -80,10 +95,6 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             required
           />
 
-          <GenderCheckbox
-            selectedGender={inputs.gender}
-            onCheckboxChange={handleCheckboxChange}
-          />
           <Button type="submit" size="lg" disabled={loading} className="w-full">
             Continue
           </Button>

@@ -10,6 +10,8 @@ import {
 import { useAuthContext } from "./AuthContext";
 import io, { Socket } from "socket.io-client";
 import Env from "@/lib/env";
+import { useSession } from "next-auth/react";
+import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 
 interface ISocketContext {
   socket: Socket | null;
@@ -32,16 +34,16 @@ const socketURL = Env.BACKEND_URL;
 // process.env.NODE_ENV === "development" ? "http://localhost:8000" : "/";
 
 const SocketContextProvider = ({ children }: { children: ReactNode }) => {
+  const { data } = useSession();
   const socketRef = useRef<Socket | null>(null);
-
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-  const { authUser, isLoading } = useAuthContext();
+  const session: CustomSession | null = data;
 
   useEffect(() => {
-    if (authUser && !isLoading) {
+    if (session?.user?.id) {
       const socket = io(socketURL, {
         query: {
-          userId: authUser.id,
+          userId: session?.user?.id,
         },
       });
       socketRef.current = socket;
@@ -54,13 +56,13 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
         socket.close();
         socketRef.current = null;
       };
-    } else if (!authUser && !isLoading) {
+    } else if (!session?.user?.id) {
       if (socketRef.current) {
         socketRef.current.close();
         socketRef.current = null;
       }
     }
-  }, [authUser, isLoading]);
+  }, [session]);
 
   return (
     <SocketContext.Provider value={{ socket: socketRef.current, onlineUsers }}>

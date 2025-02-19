@@ -23,6 +23,7 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
               width={40}
               height={25}
               alt="user avatar"
+              className="rounded-full"
             />
             <span
               className={`absolute top-0 right-2 h-2.5 w-2.5 rounded-full bg-green-600  ${!isOnline && "hidden"}`}
@@ -33,7 +34,7 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
             <p className="font-bold text-gray-200 text-sm md:text-md">
-              {conversation.fullName}
+              {conversation.name}
             </p>
           </div>
         </div>

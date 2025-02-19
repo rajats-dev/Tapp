@@ -21,6 +21,7 @@ export default function ProfileMenu({
   name: string;
 }) {
   const [logoutOpen, setLogoutOpen] = useState(false);
+
   return (
     <>
       {logoutOpen && <LogoutModal open={logoutOpen} setOpen={setLogoutOpen} />}

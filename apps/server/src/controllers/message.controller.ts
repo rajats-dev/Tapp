@@ -4,11 +4,13 @@ import { getReceiverSocketId } from "../socket.js";
 import { io } from "../index.js";
 
 class MessageController {
-  static async sendMessage(req: Request, res: Response) {
+  static async sendMessageFromSocket(
+    senderId: string,
+    receiverId: string,
+    message: string
+  ) {
     try {
-      const { message } = req.body;
-      const { id: receiverId } = req.params;
-      const senderId = req.user.id;
+      console.log(senderId, receiverId, message);
 
       let conversation = await prisma.conversation.findFirst({
         where: {
@@ -51,19 +53,71 @@ class MessageController {
           },
         });
       }
-
-      const receiverSocketId = getReceiverSocketId(receiverId);
-
-      if (receiverSocketId) {
-        io.to(receiverSocketId).emit("newMessage", newMessage);
-      }
-
-      res.status(201).json(newMessage);
     } catch (error) {
       console.error("Error in sendMessage: ", error.message);
-      res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  // static async sendMessage(req: Request, res: Response) {
+  //   try {
+  //     const { message } = req.body;
+  //     const { id: receiverId } = req.params;
+  //     const senderId = req.user.id;
+
+  //     let conversation = await prisma.conversation.findFirst({
+  //       where: {
+  //         participantIds: {
+  //           hasEvery: [senderId, receiverId],
+  //         },
+  //       },
+  //     });
+
+  //     // the very first message is being sent, that's why we need to create a new conversation
+  //     if (!conversation) {
+  //       conversation = await prisma.conversation.create({
+  //         data: {
+  //           participantIds: {
+  //             set: [senderId, receiverId],
+  //           },
+  //         },
+  //       });
+  //     }
+
+  //     const newMessage = await prisma.message.create({
+  //       data: {
+  //         senderId,
+  //         body: message,
+  //         conversationId: conversation.id,
+  //       },
+  //     });
+
+  //     if (newMessage) {
+  //       conversation = await prisma.conversation.update({
+  //         where: {
+  //           id: conversation.id,
+  //         },
+  //         data: {
+  //           messages: {
+  //             connect: {
+  //               id: newMessage.id,
+  //             },
+  //           },
+  //         },
+  //       });
+  //     }
+
+  //     const receiverSocketId = getReceiverSocketId(receiverId);
+
+  //     if (receiverSocketId) {
+  //       io.to(receiverSocketId).emit("newMessage", newMessage);
+  //     }
+
+  //     res.status(201).json(newMessage);
+  //   } catch (error) {
+  //     console.error("Error in sendMessage: ", error.message);
+  //     res.status(500).json({ error: "Internal server error" });
+  //   }
+  // }
 
   static async getMessage(req: Request, res: Response) {
     try {
@@ -106,7 +160,8 @@ class MessageController {
         },
         select: {
           id: true,
-          fullName: true,
+          name: true,
+          email: true,
           profilePic: true,
         },
       });

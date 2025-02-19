@@ -1,13 +1,20 @@
 import { MessageType } from "@/hooks/state/useConversation";
-import { useAuthContext } from "../../context/AuthContext";
 import { extractTime } from "@/lib/helper";
 import { useRef } from "react";
+import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 
-const Message = ({ message }: { message: MessageType }) => {
-  const { authUser } = useAuthContext();
+const Message = ({
+  message,
+  session,
+}: {
+  message: MessageType;
+  session: CustomSession;
+}) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const fromMe = message?.senderId === authUser?.id;
+  const fromMe = message?.senderId === session.user?.id;
 
+  // console.log(message?.senderId);
+  // console.log(session?.user?.id);
   return (
     <div className="flex flex-col w-full my-2">
       <div ref={messagesEndRef} />

@@ -10,7 +10,6 @@ type SignupInputs = {
   username: string;
   password: string;
   confirmPassword: string;
-  gender: string;
 };
 
 const useSignUp = () => {

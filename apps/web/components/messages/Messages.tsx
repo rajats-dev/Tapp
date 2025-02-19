@@ -3,9 +3,10 @@ import MessageSkeleton from "../uiSkeleton/MessageSkeleton";
 import Message from "./Message";
 import useListenMessages from "@/hooks/useListenMessages";
 import useChatScroll from "@/hooks/useChatScroll";
+import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 
-const Messages = () => {
-  const { loading, messages } = useGetMessages();
+const Messages = ({ session }: { session: CustomSession }) => {
+  const { loading, messages } = useGetMessages(session.user?.token || "");
   useListenMessages();
 
   const ref = useChatScroll(messages) as React.MutableRefObject<HTMLDivElement>;
@@ -16,7 +17,7 @@ const Messages = () => {
 
       {!loading &&
         messages.map((message) => (
-          <Message key={message.id} message={message} />
+          <Message key={message.id} message={message} session={session} />
         ))}
 
       {!loading && messages.length === 0 && (

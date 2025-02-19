@@ -5,6 +5,7 @@ export type MessageType = {
   body: string;
   senderId: string;
   createdAt: string;
+  receiverId?: string;
   //   shouldShake?: boolean;
 };
 

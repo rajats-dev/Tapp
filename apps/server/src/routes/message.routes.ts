@@ -10,6 +10,5 @@ router.get(
   MessageController.getUsersForSidebar
 );
 router.get("/:id", protectRoute, MessageController.getMessage);
-router.post("/send/:id", protectRoute, MessageController.sendMessage);
 
 export default router;

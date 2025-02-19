@@ -1,5 +1,5 @@
 type ConversationType = {
   id: string;
-  fullName: string;
+  name: string;
   profilePic: string;
 };

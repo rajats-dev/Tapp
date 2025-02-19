@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import useConversation from "@/hooks/state/useConversation";
-import useGetConversations from "@/hooks/useGetConversation";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const SearchInput = () => {
+const SearchInput = (conversations: any) => {
   const [search, setSearch] = useState("");
   const { setSelectedConversation } = useConversation();
-  const { conversations } = useGetConversations();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

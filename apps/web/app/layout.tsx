@@ -3,9 +3,10 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import AuthContextProvider from "@/context/AuthContext";
+// import AuthContextProvider from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import SocketContextProvider from "@/context/SocketContext";
+import SessionProvider from "@/providers/SessionProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -23,13 +24,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-        <AuthContextProvider>
+      <SessionProvider>
+        <body
+          className={cn(
+            "h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          {/* <AuthContextProvider> */}
           <SocketContextProvider>
             <ThemeProvider
               attribute="class"
@@ -41,8 +43,9 @@ export default function RootLayout({
             </ThemeProvider>
           </SocketContextProvider>
           <Toaster />
-        </AuthContextProvider>
-      </body>
+          {/* </AuthContextProvider> */}
+        </body>
+      </SessionProvider>
     </html>
   );
 }

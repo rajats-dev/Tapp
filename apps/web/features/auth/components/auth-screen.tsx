@@ -9,7 +9,7 @@ const AuthScreen = () => {
 
   return (
     <div className="h-full flex items-center justify-center">
-      <div className="h-[420px] md:w-[420px]">
+      <div className="h-auto md:w-[420px]">
         {state == "signIn" ? (
           <SignInCard setState={setState} />
         ) : (

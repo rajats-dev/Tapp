@@ -1,12 +1,16 @@
-"use client";
 import { Separator } from "../ui/separator";
 import { ModeToggle } from "../mode-toggle";
 import NavigationAction from "./navigation.action";
 import ProfileMenu from "@/features/auth/components/profile-menu";
-import { useAuthContext } from "@/context/AuthContext";
+import { getServerSession } from "next-auth";
+import {
+  authOptions,
+  CustomSession,
+} from "@/app/api/auth/[...nextauth]/options";
 
-const NavigationSidebar = () => {
-  const { authUser } = useAuthContext();
+const NavigationSidebar = async () => {
+  const session: CustomSession | null = await getServerSession(authOptions);
+
   return (
     <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#121a2763] bg-[#E3E5E8] py-3">
       <NavigationAction />
@@ -15,8 +19,8 @@ const NavigationSidebar = () => {
       <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
         <ModeToggle />
         <ProfileMenu
-          name={authUser?.fullName || ""}
-          image={authUser?.profilePic}
+          name={session?.user?.name || ""}
+          image={session?.user?.image || ""}
         />
       </div>
     </div>

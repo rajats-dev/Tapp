@@ -1,18 +1,9 @@
-"use client";
-import { useAuthContext } from "@/context/AuthContext";
 import AuthScreen from "@/features/auth/components/auth-screen";
-import { redirect } from "next/navigation";
+import { authOptions, CustomSession } from "./api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
 
-export default function Home() {
-  const { authUser, isLoading } = useAuthContext();
+export default async function Home() {
+  const session: CustomSession | null = await getServerSession(authOptions);
 
-  if (isLoading) return null;
-
-  console.log(authUser);
-
-  if (authUser) {
-    redirect("/client");
-  }
-
-  return <>{!authUser && <AuthScreen />}</>;
+  return <>{!session?.user && <AuthScreen />}</>;
 }

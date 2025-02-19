@@ -14,14 +14,16 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  username   String   @unique
-  fullName   String
-  password   String
-  gender     Gender
-  profilePic String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id         String  @id @default(uuid())
+  name       String
+  email      String  @unique @db.VarChar(191)
+  password   String?
+  provider   String? @db.VarChar(100)
+  oauth_id   String?
+  profilePic String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   conversationsIds String[]
 
@@ -30,7 +32,7 @@ model User {
 }
 
 model Conversation {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -42,7 +44,7 @@ model Conversation {
 }
 
 model Message {
-  id String @id @default(cuid())
+  id String @id @default(uuid())
 
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id])
@@ -53,9 +55,4 @@ model Message {
   body      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum Gender {
-  MALE
-  FEMALE
 }
