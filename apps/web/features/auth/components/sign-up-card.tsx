@@ -19,10 +19,9 @@ interface SignUpCardProps {
 
 const SignUpCard = ({ setState }: SignUpCardProps) => {
   const [inputs, setInputs] = useState({
-    fullName: "",
-    username: "",
+    name: "",
+    email: "",
     password: "",
-    confirmPassword: "",
   });
   const { loading, signup } = useSignUp();
 
@@ -62,17 +61,17 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         <form onSubmit={handleSubmitForm}>
           <Input
             disabled={false}
-            value={inputs.fullName}
-            onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
-            placeholder="Fullname"
+            value={inputs.name}
+            onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+            placeholder="Name"
             type="text"
             required
           />
           <Input
             disabled={false}
-            value={inputs.username}
-            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-            placeholder="Username"
+            value={inputs.email}
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+            placeholder="Email"
             type="text"
             required
           />
@@ -84,17 +83,6 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             type="password"
             required
           />
-          <Input
-            disabled={false}
-            value={inputs.confirmPassword}
-            onChange={(e) =>
-              setInputs({ ...inputs, confirmPassword: e.target.value })
-            }
-            placeholder="Confirm Password"
-            type="password"
-            required
-          />
-
           <Button type="submit" size="lg" disabled={loading} className="w-full">
             Continue
           </Button>

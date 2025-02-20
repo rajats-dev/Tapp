@@ -13,58 +13,49 @@ interface LoginPayloadType {
 }
 
 class AuthController {
-  // static async signup(req: Request, res: Response) {
-  //   try {
-  //     const { fullName, username, password, confirmPassword, gender } =
-  //       req.body;
+  static async signup(req: Request, res: Response) {
+    try {
+      const { name, email, password } = req.body;
 
-  //     if (!fullName || !username || !password || !confirmPassword || !gender) {
-  //       return res.status(400).json({ error: "Please fill in all fields" });
-  //     }
+      console.log(name, email, password);
+      if (!name || !password || !email) {
+        return res.status(400).json({ error: "Please fill in all fields" });
+      }
 
-  //     if (password !== confirmPassword) {
-  //       return res.status(400).json({ error: "Passwords don't match" });
-  //     }
+      const user = await prisma.user.findUnique({ where: { email } });
 
-  //     const user = await prisma.user.findUnique({ where: { username } });
+      if (user) {
+        return res.status(400).json({ error: "User already exists" });
+      }
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(password, salt);
 
-  //     if (user) {
-  //       return res.status(400).json({ error: "Username already exists" });
-  //     }
-  //     const salt = await bcryptjs.genSalt(10);
-  //     const hashedPassword = await bcryptjs.hash(password, salt);
+      const profilePic = `https://avatar.iran.liara.run/username?username=${name}`;
 
-  //     const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-  //     const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+      const newUser = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          profilePic,
+        },
+      });
 
-  //     const newUser = await prisma.user.create({
-  //       data: {
-  //         fullName,
-  //         username,
-  //         password: hashedPassword,
-  //         gender,
-  //         profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
-  //       },
-  //     });
-
-  //     if (newUser) {
-  //       // generate token in a sec
-  //       generateToken(newUser.id, res);
-
-  //       res.status(201).json({
-  //         id: newUser.id,
-  //         fullName: newUser.fullName,
-  //         username: newUser.username,
-  //         profilePic: newUser.profilePic,
-  //       });
-  //     } else {
-  //       res.status(400).json({ error: "Invalid user data" });
-  //     }
-  //   } catch (error) {
-  //     console.log("Error in signup controller", error.message);
-  //     res.status(500).json({ error: "Internal Server Error" });
-  //   }
-  // }
+      if (newUser) {
+        res.status(201).json({
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          profilePic: newUser.profilePic,
+        });
+      } else {
+        res.status(400).json({ error: "Invalid user data" });
+      }
+    } catch (error) {
+      console.log("Error in signup controller", error.message);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 
   static async outhLogin(req: Request, res: Response) {
     try {
@@ -104,25 +95,35 @@ class AuthController {
   static async login(req: Request, res: Response) {
     try {
       const { password, email } = req.body;
-      const user = await prisma.user.findUnique({ where: { email } });
+      const findUser = await prisma.user.findUnique({ where: { email } });
 
-      if (!user) {
+      if (!findUser) {
         return res.status(400).json({ error: "Invalid credentials" });
       }
 
-      const isPasswordCorrect = await bcryptjs.compare(password, user.password);
+      const isPasswordCorrect = await bcryptjs.compare(
+        password,
+        findUser.password
+      );
 
       if (!isPasswordCorrect) {
         return res.status(400).json({ error: "Invalid credentials" });
       }
 
-      generateToken(user.id, res);
+      let JWTPayload = {
+        id: findUser.id,
+        name: findUser.name,
+        email: email,
+        password: password,
+      };
+
+      const token = jwt.sign(JWTPayload, process.env.JWT_SECRET, {
+        expiresIn: "365d",
+      });
 
       res.status(200).json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        profilePic: user.profilePic,
+        message: "Logged in successfully!",
+        user: { ...findUser, token: `Bearer ${token}` },
       });
     } catch (error) {
       console.log("Error in login controller", error.message);

@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import React, { useState } from "react";
 import { SingInFlow } from "../types";
-import useLogin from "@/hooks/useLogin";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface SignInCardProps {
   setState: (state: SingInFlow) => void;
@@ -18,15 +19,28 @@ interface SignInCardProps {
 
 const SignInCard = ({ setState }: SignInCardProps) => {
   const [inputs, setInputs] = useState({
-    username: "",
+    email: "",
     password: "",
   });
-
-  const { loading, login } = useLogin();
+  const router = useRouter();
+  const [loader, setloader] = useState(false);
 
   const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    login(inputs.username, inputs.password);
+    (async () => {
+      try {
+        setloader(true);
+        const res = await signIn("credentials", {
+          email: inputs.email,
+          password: inputs.password,
+          redirect: false,
+        });
+        if (!res?.ok) throw new Error(res?.error || "Error in process");
+        router.push("/client");
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   };
 
   return (
@@ -41,9 +55,9 @@ const SignInCard = ({ setState }: SignInCardProps) => {
         <form className="space-y-2.5" onSubmit={handleSubmitForm}>
           <Input
             disabled={false}
-            value={inputs.username}
-            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-            placeholder="Username"
+            value={inputs.email}
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+            placeholder="Email"
             type="text"
             required
           />
@@ -55,7 +69,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
             type="password"
             required
           />
-          <Button type="submit" size="lg" disabled={loading} className="w-full">
+          <Button type="submit" size="lg" disabled={loader} className="w-full">
             Continue
           </Button>
           <Separator />

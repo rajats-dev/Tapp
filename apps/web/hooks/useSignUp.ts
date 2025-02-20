@@ -1,20 +1,19 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { useAuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { AUTH_USER } from "@/lib/apiAuthRoutes";
+import useAuthState from "./state/useAuthState";
 
 type SignupInputs = {
-  fullName: string;
-  username: string;
+  name: string;
+  email: string;
   password: string;
-  confirmPassword: string;
 };
 
 const useSignUp = () => {
   const [loading, setLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { setPageState } = useAuthState();
 
   const signup = async (inputs: SignupInputs) => {
     try {
@@ -28,7 +27,8 @@ const useSignUp = () => {
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.error);
-      setAuthUser(data);
+      toast.success("Successfully Signup");
+      setPageState("signIn");
     } catch (error: any) {
       console.error(error.message);
       toast.error(error.message);

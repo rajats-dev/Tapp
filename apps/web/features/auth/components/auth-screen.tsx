@@ -1,19 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import { SingInFlow } from "../types";
 import SignUpCard from "./sign-up-card";
 import SignInCard from "./sign-in-card";
+import useAuthState from "@/hooks/state/useAuthState";
 
 const AuthScreen = () => {
-  const [state, setState] = useState<SingInFlow>("signIn");
+  const { pageState, setPageState } = useAuthState();
 
   return (
     <div className="h-full flex items-center justify-center">
       <div className="h-auto md:w-[420px]">
-        {state == "signIn" ? (
-          <SignInCard setState={setState} />
+        {pageState == "signIn" ? (
+          <SignInCard setState={setPageState} />
         ) : (
-          <SignUpCard setState={setState} />
+          <SignUpCard setState={setPageState} />
         )}
       </div>
     </div>
