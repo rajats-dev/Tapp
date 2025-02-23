@@ -3,7 +3,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AUTH_USER } from "@/lib/apiAuthRoutes";
-import useAuthState from "./state/useAuthState";
+import useAuthState from "../state/useAuthState";
 
 type SignupInputs = {
   name: string;

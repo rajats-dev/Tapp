@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-// import AuthContextProvider from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import SocketContextProvider from "@/context/SocketContext";
 import SessionProvider from "@/providers/SessionProvider";
+import { ModalProvider } from "@/providers/ModalProvider";
+import QueryProvider from "@/providers/QueryProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -39,7 +40,10 @@ export default function RootLayout({
               enableSystem={false}
               storageKey="discord-theme"
             >
-              {children}
+              <QueryProvider>
+                <ModalProvider />
+                {children}
+              </QueryProvider>
             </ThemeProvider>
           </SocketContextProvider>
           <Toaster />

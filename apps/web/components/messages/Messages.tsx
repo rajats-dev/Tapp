@@ -1,8 +1,8 @@
-import useGetMessages from "@/hooks/useGetMessages";
+import useGetMessages from "@/hooks/query/useGetMessages";
 import MessageSkeleton from "../uiSkeleton/MessageSkeleton";
 import Message from "./Message";
-import useListenMessages from "@/hooks/useListenMessages";
-import useChatScroll from "@/hooks/useChatScroll";
+import useListenMessages from "@/hooks/query/useListenMessages";
+import useChatScroll from "@/hooks/query/useChatScroll";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 
 const Messages = ({ session }: { session: CustomSession }) => {

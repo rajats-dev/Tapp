@@ -1,16 +1,12 @@
 import { Send } from "lucide-react";
 import { useState } from "react";
-import useSendMessage from "../../hooks/useSendMessage";
 import { useSocketContext } from "@/context/SocketContext";
 import useConversation, { MessageType } from "@/hooks/state/useConversation";
 import { v4 as uuidv4 } from "uuid";
-import { useAuthContext } from "@/context/AuthContext";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 
 const MessageInput = ({ session }: { session: CustomSession }) => {
   const [inputMessage, setInputMessage] = useState<string>("");
-  // const { loading, sendMessage } = useSendMessage();
-  // const { authUser } = useAuthContext();
   const { socket } = useSocketContext();
   const { messages, setMessages, selectedConversation } = useConversation();
 

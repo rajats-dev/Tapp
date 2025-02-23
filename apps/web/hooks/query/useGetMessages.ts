@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useConversation from "./state/useConversation";
+import useConversation from "../state/useConversation";
 import { CHAT_URL } from "@/lib/apiAuthRoutes";
 
 const useGetMessages = (token: string) => {

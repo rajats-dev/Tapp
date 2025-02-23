@@ -20,7 +20,7 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
           <div className="relative w-10 md:w-12 rounded-full">
             <Image
               src={conversation.profilePic}
-              width={40}
+              width={35}
               height={25}
               alt="user avatar"
               className="rounded-full"

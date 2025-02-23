@@ -29,6 +29,10 @@ model User {
 
   conversations Conversation[]
   messages      Message[]
+
+  groups       Groups[]
+  GroupMessage GroupMessage[]
+  GroupMember  GroupMember[]
 }
 
 model Conversation {
@@ -47,12 +51,61 @@ model Message {
   id String @id @default(uuid())
 
   conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   senderId String
   sender   User   @relation(fields: [senderId], references: [id])
 
   body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//////////////////////////
+
+model Groups {
+  id   String @id @default(uuid())
+  name String
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  groupMember  GroupMember[]
+  groupMessage GroupMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GroupMessage {
+  id String @id @default(uuid())
+
+  groupId String
+  group   Groups @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id])
+
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum MemberRole {
+  ADMIN
+  GUEST
+}
+
+model GroupMember {
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
+
+  memberId String
+  member   User   @relation(fields: [memberId], references: [id])
+
+  groupId String
+  group   Groups @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

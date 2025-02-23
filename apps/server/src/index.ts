@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
+import groupRoutes from "./routes/group.routes.js";
 
 import cookieParser from "cookie-parser";
 import "dotenv/config";
@@ -37,6 +38,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/group", groupRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   return res.send("It's working 🙌");

@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { SingInFlow } from "../types";
-import useSignUp from "@/hooks/useSignUp";
+import useSignUp from "@/hooks/query/useSignUp";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
