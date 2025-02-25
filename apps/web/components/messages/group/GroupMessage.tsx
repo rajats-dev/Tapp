@@ -3,7 +3,7 @@ import { extractTime } from "@/lib/helper";
 import { useRef } from "react";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 
-const Message = ({
+const GroupMessage = ({
   message,
   session,
 }: {
@@ -33,4 +33,4 @@ const Message = ({
     </div>
   );
 };
-export default Message;
+export default GroupMessage;

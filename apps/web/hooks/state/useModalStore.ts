@@ -3,9 +3,9 @@ import { create } from "zustand";
 export type ModalType =
   | "createGroup"
   | "deleteGroup"
+  | "invite"
   //
   | "createServer"
-  | "invite"
   | "editServer"
   | "members"
   | "leaveServer"

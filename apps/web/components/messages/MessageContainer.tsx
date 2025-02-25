@@ -5,13 +5,24 @@ import { MessageCircle } from "lucide-react";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
+import useGroups, { type, useType } from "@/hooks/state/useGroups";
+import GroupMessages from "./group/GroupMessages";
 
 const MessageContainer = ({ session }: { session: CustomSession }) => {
   const { selectedConversation } = useConversation();
+  const { selectedGroup } = useGroups();
+  const { selectedType } = useType();
+
+  const groupSelected = selectedType == type.Group;
+  const coversationSelected = selectedType == type.Conversation;
+
+  console.log(selectedConversation);
+  console.log(groupSelected);
+  console.log(coversationSelected);
 
   return (
     <div className="w-full h-full flex flex-col">
-      {!selectedConversation ? (
+      {!selectedConversation && !selectedGroup ? (
         <NoChatSelected session={session} />
       ) : (
         <>
@@ -19,11 +30,15 @@ const MessageContainer = ({ session }: { session: CustomSession }) => {
           <div className="bg-[#121a27b1] px-4 py-2 mb-2">
             <span>To:</span>{" "}
             <span className="text-white font-bold">
-              {selectedConversation?.name}
+              {groupSelected ? selectedGroup?.name : selectedConversation?.name}
             </span>
           </div>
 
-          <Messages session={session} />
+          {groupSelected ? (
+            <GroupMessages session={session} />
+          ) : (
+            <Messages session={session} />
+          )}
           <MessageInput session={session} />
         </>
       )}

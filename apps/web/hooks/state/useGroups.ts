@@ -43,12 +43,28 @@ interface GroupState {
 }
 
 const useGroups = create<GroupState>((set) => ({
+  selectedGroupType: null,
   selectedGroup: null,
   groupMessage: [],
   groupList: [],
   setGroupList: (list) => set({ groupList: list }),
   setSelectedGroup: (grp) => set({ selectedGroup: grp }),
   setGroupMessage: (messages) => set({ groupMessage: messages }),
+}));
+
+interface Type {
+  selectedType: type | null;
+  setSelectedType: (type: type) => void;
+}
+
+export enum type {
+  Group,
+  Conversation,
+}
+
+export const useType = create<Type>((set) => ({
+  selectedType: null,
+  setSelectedType: (type) => set({ selectedType: type }),
 }));
 
 export default useGroups;

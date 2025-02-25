@@ -13,6 +13,8 @@ const Client = async () => {
     return redirect("/");
   }
 
+  console.log(session?.user?.token);
+
   return <MessageContainer session={session} />;
 };
 

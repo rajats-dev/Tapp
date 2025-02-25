@@ -18,7 +18,7 @@ import { GROUP_URL } from "@/lib/apiAuthRoutes";
 import { CustomUser } from "@/app/api/auth/[...nextauth]/options";
 import { useQueryClient } from "@tanstack/react-query";
 
-const DeleteGroupModal = ({ user }: { user: CustomUser }) => {
+const DeleteGroupModal = ({ user }: { user: CustomUser | undefined }) => {
   const queryClient = useQueryClient();
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();

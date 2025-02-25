@@ -64,8 +64,9 @@ model Message {
 //////////////////////////
 
 model Groups {
-  id   String @id @default(uuid())
-  name String
+  id         String @id @default(uuid())
+  name       String
+  inviteCode String @unique
 
   creatorId String
   creator   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
@@ -97,8 +98,9 @@ enum MemberRole {
 }
 
 model GroupMember {
-  id   String     @id @default(uuid())
-  role MemberRole @default(GUEST)
+  id         String     @id @default(uuid())
+  role       MemberRole @default(GUEST)
+  memberName String
 
   memberId String
   member   User   @relation(fields: [memberId], references: [id])

@@ -33,7 +33,7 @@ export default function CreateGroup({
 
   const onSubmit = async (payload: createGropupSchemaType) => {
     try {
-      await createGroup(payload);
+      await createGroup({ ...payload, userName: user?.name });
       onClose();
     } catch (error) {
       console.log(error);

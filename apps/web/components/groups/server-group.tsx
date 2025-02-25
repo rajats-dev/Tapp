@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import ActionTooltip from "../action-tooltip";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 import { ModalType, useModal } from "@/hooks/state/useModalStore";
-import useGroups, { GroupListData, MemberRole } from "@/hooks/state/useGroups";
+import useGroups, {
+  GroupListData,
+  MemberRole,
+  type,
+  useType,
+} from "@/hooks/state/useGroups";
+import useConversation from "@/hooks/state/useConversation";
 
 const ServerGroups = ({
   group,
@@ -16,7 +22,9 @@ const ServerGroups = ({
 }) => {
   const router = useRouter();
   const { selectedGroup, setSelectedGroup } = useGroups();
+  const { setSelectedConversation } = useConversation();
   const { onOpen } = useModal();
+  const { setSelectedType } = useType();
 
   // const onClick = () => {
   //   router.push(`/groups/${group.id}`);
@@ -27,13 +35,17 @@ const ServerGroups = ({
     onOpen(action, { group });
   };
 
-  const role = group.groupMember.find(
+  const role = group?.groupMember?.find(
     (member) => member.memberId === session?.user?.id
   )?.role;
 
   return (
     <div
-      onClick={() => setSelectedGroup(group)}
+      onClick={() => {
+        setSelectedGroup(group);
+        setSelectedConversation(null);
+        setSelectedType(type.Group);
+      }}
       className={cn(
         "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-sky-500 transition mb-1 cursor-pointer",
         selectedGroup?.id === group.id && "bg-sky-500"
@@ -69,7 +81,10 @@ const ServerGroups = ({
         <ActionTooltip label="invite">
           <UserPlus
             className="group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400  transition"
-            onClick={() => onOpen("invite", { group })}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen("invite", { group });
+            }}
           />
         </ActionTooltip>
       </div>

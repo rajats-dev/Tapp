@@ -5,13 +5,13 @@ import { GROUP_URL } from "@/lib/apiAuthRoutes";
 import useGroups from "../state/useGroups";
 import { useQuery } from "@tanstack/react-query";
 
-const useFetchGroups = (token: string, enabled?: boolean) => {
+const useJoinedGroups = (token: string, enabled?: boolean) => {
   const { groupList, setGroupList } = useGroups();
 
   const { status } = useQuery({
-    queryKey: ["groups"],
+    queryKey: ["joinedGroups"],
     queryFn: async () => {
-      const res = await fetch(`${GROUP_URL}/fetchGroup`, {
+      const res = await fetch(`${GROUP_URL}/joinedGroup`, {
         headers: { Authorization: token },
         credentials: "include",
       });
@@ -24,7 +24,7 @@ const useFetchGroups = (token: string, enabled?: boolean) => {
     refetchOnWindowFocus: false,
   });
 
-  return { status, groupList };
+  // return { status, groupList };
 };
 
-export default useFetchGroups;
+export default useJoinedGroups;

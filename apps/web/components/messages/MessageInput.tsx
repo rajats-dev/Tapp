@@ -26,6 +26,7 @@ const MessageInput = ({ session }: { session: CustomSession }) => {
     setInputMessage("");
     setMessages([...messages, payload]);
   };
+
   return (
     <form className="px-4 mb-3" onSubmit={handleSubmit}>
       <div className="w-full relative">
@@ -40,11 +41,6 @@ const MessageInput = ({ session }: { session: CustomSession }) => {
           type="submit"
           className="absolute inset-y-0 end-0 flex items-center pe-3"
         >
-          {/* {loading ? (
-            <span className="loading loading-spinner" />
-          ) : (
-            <Send className="w-6 h-6 text-white" />
-            )} */}
           <Send className="w-6 h-6 text-white" />
         </button>
       </div>

@@ -9,13 +9,15 @@ import ServerSection from "../groups/server-section";
 import ServerGroups from "../groups/server-group";
 import useFetchGroups from "@/hooks/query/useFetchGroups";
 import Loader from "../ui/loader";
+import useJoinedGroups from "@/hooks/query/useJoinedGroups";
 
 const Sidebar = ({ session }: { session: CustomSession }) => {
   const token = session?.user?.token || "";
   const { conversations } = useGetConversations(session?.user?.token || "");
-  const { groupList, isLoading } = useFetchGroups(token, token !== undefined);
+  const { groupList, status } = useFetchGroups(token, token !== undefined);
+  useJoinedGroups(token, token !== undefined);
 
-  console.log(groupList);
+  // console.log(groupList);
 
   return (
     <div className="h-full flex flex-col w-full  dark:bg-[#121a27b1] bg-[#F2F3F5] px-3">
@@ -23,8 +25,9 @@ const Sidebar = ({ session }: { session: CustomSession }) => {
       <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-4" />
       <ServerSection label="Your Groups" />
 
-      {isLoading && <Loader />}
-      {!!groupList?.length && (
+      {status == "pending" ? (
+        <Loader />
+      ) : groupList?.length > 0 ? (
         <div className="mb-2">
           <div className="space-y-[2px]">
             {groupList?.map((grp, index) => (
@@ -32,9 +35,15 @@ const Sidebar = ({ session }: { session: CustomSession }) => {
             ))}
           </div>
         </div>
+      ) : (
+        <div className="mx-auto my-2 text-sm">No Groups Available</div>
       )}
       <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-4" />
-      <UserConversations conversations={conversations} />
+      {!conversations ? (
+        <Loader />
+      ) : (
+        <UserConversations conversations={conversations} />
+      )}
     </div>
   );
 };
