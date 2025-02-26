@@ -1,14 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { GROUP_URL } from "@/lib/apiAuthRoutes";
 import useGroups from "../state/useGroups";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const useJoinedGroups = (token: string, enabled?: boolean) => {
-  const { groupList, setGroupList } = useGroups();
+  const { setGroupList } = useGroups();
 
-  const { status } = useQuery({
+  const { refetch: refetchJoined } = useQuery({
     queryKey: ["joinedGroups"],
     queryFn: async () => {
       const res = await fetch(`${GROUP_URL}/joinedGroup`, {
@@ -18,13 +16,14 @@ const useJoinedGroups = (token: string, enabled?: boolean) => {
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setGroupList([...data]); // ✅ Updating state directly
+      toast.success("Joined Group Fetch Successfully");
       return data;
     },
     enabled: enabled,
     refetchOnWindowFocus: false,
   });
 
-  // return { status, groupList };
+  return { refetchJoined };
 };
 
 export default useJoinedGroups;

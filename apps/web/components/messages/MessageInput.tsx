@@ -4,27 +4,47 @@ import { useSocketContext } from "@/context/SocketContext";
 import useConversation, { MessageType } from "@/hooks/state/useConversation";
 import { v4 as uuidv4 } from "uuid";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
+import useGroups, {
+  GroupMessageType,
+  type,
+  useType,
+} from "@/hooks/state/useGroups";
 
 const MessageInput = ({ session }: { session: CustomSession }) => {
   const [inputMessage, setInputMessage] = useState<string>("");
   const { socket } = useSocketContext();
   const { messages, setMessages, selectedConversation } = useConversation();
+  const { groupMessage, setGroupMessage, selectedGroup } = useGroups();
+  const { selectedType } = useType();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
-    const payload: MessageType = {
-      id: uuidv4(),
-      body: inputMessage,
-      senderId: session.user?.id || "",
-      receiverId: selectedConversation?.id,
-      createdAt: new Date().toISOString(),
-    };
+    if (selectedType === type.Group) {
+      const payload: GroupMessageType = {
+        id: uuidv4(),
+        body: inputMessage,
+        memberName: session?.user?.name || "user",
+        senderId: session.user?.id || "",
+        groupId: selectedGroup?.id,
+        createdAt: new Date().toISOString(),
+      };
+      socket?.emit("groupMessage", payload);
+      setGroupMessage([...groupMessage, payload]);
+    } else {
+      const payload: MessageType = {
+        id: uuidv4(),
+        body: inputMessage,
+        senderId: session.user?.id || "",
+        receiverId: selectedConversation?.id,
+        createdAt: new Date().toISOString(),
+      };
 
-    socket?.emit("message", payload);
+      socket?.emit("message", payload);
+      setMessages([...messages, payload]);
+    }
     setInputMessage("");
-    setMessages([...messages, payload]);
   };
 
   return (

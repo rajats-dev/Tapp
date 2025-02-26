@@ -4,10 +4,10 @@ import { create } from "zustand";
 export type GroupMessageType = {
   id: string;
   body: string;
+  memberName: string;
   senderId: string;
+  groupId?: string;
   createdAt: string;
-  // receiverId?: string;
-  // shouldShake?: boolean;
 };
 
 export enum MemberRole {

@@ -40,7 +40,7 @@ const DeleteGroupModal = ({ user }: { user: CustomUser | undefined }) => {
         }
       );
       if (data?.message) {
-        queryClient.invalidateQueries({ queryKey: ["groups"] });
+        queryClient.invalidateQueries({ queryKey: ["groups", user?.token] });
         toast.success(data?.message);
         onClose();
       }

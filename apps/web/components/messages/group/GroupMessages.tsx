@@ -9,8 +9,6 @@ const GroupMessages = ({ session }: { session: CustomSession }) => {
   const { loading, groupMessage } = useGroupMessages(session.user?.token || "");
   useListenMessages();
 
-  console.log(groupMessage);
-
   const ref = useChatScroll(
     groupMessage
   ) as React.MutableRefObject<HTMLDivElement>;

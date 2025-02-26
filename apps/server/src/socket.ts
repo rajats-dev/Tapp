@@ -28,13 +28,16 @@ export function setupSocket(io: Server) {
   };
 
   const sendGroupMessages = async (payload: any) => {
-    const { senderId, groupId, body } = payload;
+    const { senderId, groupId, body, memberName } = payload;
 
+    console.log(senderId, groupId, body);
     const member = await GroupController.getGroupMember(groupId);
-    console.log("member---", member);
+    // console.log("member---", member);
 
-    if (member) {
-      member.forEach((member) => {
+    const memberList = member?.filter((list) => list.memberId !== senderId);
+
+    if (memberList) {
+      memberList.forEach((member) => {
         const memberScoketId = getReceiverSocketId(member.memberId);
         if (memberScoketId) {
           io.to(memberScoketId).emit("recieve-group-message", payload);
@@ -42,7 +45,7 @@ export function setupSocket(io: Server) {
       });
     }
 
-    await GroupController.sendGroupMessage(senderId, groupId, body);
+    await GroupController.sendGroupMessage(senderId, groupId, body, memberName);
   };
 
   io.on("connection", (socket) => {
@@ -53,8 +56,8 @@ export function setupSocket(io: Server) {
 
     // io.emit() is used to send events to all the connected clients
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
-    socket.on("message", sendGroupMessages);
-    // socket.on("message", sendMessage);
+    socket.on("groupMessage", sendGroupMessages);
+    socket.on("message", sendMessage);
     socket.on("disconnect", () => disconnect(socket, userId));
   });
 }

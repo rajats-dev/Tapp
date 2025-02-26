@@ -1,7 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { Edit, Group, Lock, Trash, UserPlus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Group, Lock, Trash, UserPlus } from "lucide-react";
 import ActionTooltip from "../action-tooltip";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 import { ModalType, useModal } from "@/hooks/state/useModalStore";
@@ -20,22 +19,17 @@ const ServerGroups = ({
   group: GroupListData;
   session: CustomSession;
 }) => {
-  const router = useRouter();
   const { selectedGroup, setSelectedGroup } = useGroups();
   const { setSelectedConversation } = useConversation();
   const { onOpen } = useModal();
   const { setSelectedType } = useType();
-
-  // const onClick = () => {
-  //   router.push(`/groups/${group.id}`);
-  // };
 
   const onAction = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
     onOpen(action, { group });
   };
 
-  const role = group?.groupMember?.find(
+  const role: MemberRole | undefined = group?.groupMember?.find(
     (member) => member.memberId === session?.user?.id
   )?.role;
 
@@ -62,14 +56,14 @@ const ServerGroups = ({
         {group.name}
       </div>
       <div className="ml-auto flex items-center gap-x-2">
-        {role !== MemberRole.GUEST && (
+        {role !== MemberRole[1] && (
           <div className="ml-auto flex items-center gap-x-2">
-            <ActionTooltip label="Edit">
+            {/* <ActionTooltip label="Edit">
               <Edit
                 className="hidden group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400 transition"
                 // onClick={(e) => onAction(e, "editChannel")}
               />
-            </ActionTooltip>
+            </ActionTooltip> */}
             <ActionTooltip label="Delete">
               <Trash
                 className="hidden group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400  transition"
@@ -78,17 +72,19 @@ const ServerGroups = ({
             </ActionTooltip>
           </div>
         )}
-        <ActionTooltip label="invite">
-          <UserPlus
-            className="group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400  transition"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpen("invite", { group });
-            }}
-          />
-        </ActionTooltip>
+        {role !== MemberRole[1] && (
+          <ActionTooltip label="invite">
+            <UserPlus
+              className="group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400  transition"
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpen("invite", { group });
+              }}
+            />
+          </ActionTooltip>
+        )}
       </div>
-      {group.name === selectedGroup?.id && (
+      {role === MemberRole[1] && (
         <Lock className="ml-auto w-4 h-4 text-zinc-200 dark:text-zinc-300" />
       )}
     </div>

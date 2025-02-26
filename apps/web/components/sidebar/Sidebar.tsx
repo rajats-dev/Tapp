@@ -14,8 +14,11 @@ import useJoinedGroups from "@/hooks/query/useJoinedGroups";
 const Sidebar = ({ session }: { session: CustomSession }) => {
   const token = session?.user?.token || "";
   const { conversations } = useGetConversations(session?.user?.token || "");
-  const { groupList, status } = useFetchGroups(token, token !== undefined);
-  useJoinedGroups(token, token !== undefined);
+  const { groupList, status, refetch } = useFetchGroups(
+    token,
+    token !== undefined
+  );
+  const { refetchJoined } = useJoinedGroups(token, token !== undefined);
 
   // console.log(groupList);
 
@@ -23,7 +26,13 @@ const Sidebar = ({ session }: { session: CustomSession }) => {
     <div className="h-full flex flex-col w-full  dark:bg-[#121a27b1] bg-[#F2F3F5] px-3">
       <SearchInput conversations={conversations} />
       <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-4" />
-      <ServerSection label="Your Groups" />
+      <ServerSection
+        label="Your Groups"
+        refetch={() => {
+          refetch();
+          refetchJoined();
+        }}
+      />
 
       {status == "pending" ? (
         <Loader />

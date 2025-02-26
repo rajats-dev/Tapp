@@ -14,11 +14,6 @@ const MessageContainer = ({ session }: { session: CustomSession }) => {
   const { selectedType } = useType();
 
   const groupSelected = selectedType == type.Group;
-  const coversationSelected = selectedType == type.Conversation;
-
-  console.log(selectedConversation);
-  console.log(groupSelected);
-  console.log(coversationSelected);
 
   return (
     <div className="w-full h-full flex flex-col">

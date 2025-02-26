@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import prisma from "../config/db.config.js";
 import { v4 as uuidv4 } from "uuid";
 
+export let member;
+
 class GroupController {
   static async createGroup(req: Request, res: Response) {
     try {
@@ -93,9 +95,9 @@ class GroupController {
             },
           },
         },
-        // include: {
-        //   groupMember: true, // Include members if needed
-        // },
+        include: {
+          groupMember: true, // Include members if needed
+        },
       });
 
       console.log(guestGroups);
@@ -204,16 +206,18 @@ class GroupController {
   static async sendGroupMessage(
     senderId: string,
     groupId: string,
-    body: string
+    body: string,
+    memberName: string
   ) {
     try {
-      if (!senderId && !groupId && !body) {
+      if (!senderId && !groupId && !body && !memberName) {
         console.log("Value are undefined");
         return;
       }
 
       const newMessage = await prisma.groupMessage.create({
         data: {
+          memberName: memberName,
           body: body,
           senderId: senderId,
           groupId: groupId,
