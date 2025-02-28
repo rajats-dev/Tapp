@@ -1,31 +1,23 @@
-// import { NextRequest, NextResponse } from "next/server";
-// import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 // export { default } from "next-auth/middleware";
 
-// export async function middleware(request: NextRequest) {
-//   const token = await getToken({ req: request });
-//   const url = request.nextUrl;
+export async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request });
+  const url = request.nextUrl;
 
-//   if (!token && url.pathname !== "/") {
-//     return NextResponse.redirect(new URL("/", request.url));
-//   }
+  console.log(token);
 
-//   if (
-//     token &&
-//     url.pathname.startsWith("/") &&
-//     !url.pathname.startsWith("/dashboard")
-//   ) {
-//     return NextResponse.redirect(new URL("/dashboard", request.url));
-//   }
-//   return NextResponse.next();
-// }
+  if (!token && url.pathname !== "/") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 
-// export const config = {
-//   matcher: [
-//     "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
-//   ],
-// };
+  if (token && url.pathname !== "/") {
+    return NextResponse.redirect(new URL("/client", request.url));
+  }
+  return NextResponse.next();
+}
 
-export { default } from "next-auth/middleware";
+// export { default } from "next-auth/middleware";
 
-export const config = { matcher: ["/client"] };
+export const config = { matcher: ["/"] };

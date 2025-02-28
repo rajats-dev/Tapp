@@ -17,7 +17,7 @@ const useFetchGroups = (token: string, enabled?: boolean) => {
       const data = await res.json();
       console.log(data);
       setGroupList([...data]); // ✅ Updating state directly
-      toast.success("Created Group Fetch Successfully");
+      toast.success("Fetching Groups Successfully");
       return data;
     },
     enabled: enabled,

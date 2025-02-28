@@ -81,9 +81,20 @@ class AuthController {
         expiresIn: "365d",
       });
 
+      let filteObj = {
+        id: findUser.id,
+        name: findUser.name,
+        email: findUser.email,
+        provider: findUser.provider,
+        oauth_id: findUser.oauth_id,
+        profilePic: findUser.profilePic,
+        createdAt: findUser.createdAt,
+        updatedAt: findUser.updatedAt,
+      };
+
       res.status(200).json({
         message: "Logged in successfully!",
-        user: { ...findUser, token: `Bearer ${token}` },
+        user: { ...filteObj, token: `Bearer ${token}` },
       });
     } catch (error) {
       return res

@@ -9,6 +9,8 @@ import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { setupSocket } from "./socket.js";
+import redis from "./config/redis.config.js";
+import { createAdapter } from "@socket.io/redis-streams-adapter";
 
 const app: Application = express();
 const PORT = process.env.PORT || 7000;
@@ -25,8 +27,8 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [process.env.CLIENT_URL],
-    // methods: ["GET", "POST"],
   },
+  adapter: createAdapter(redis),
 });
 
 setupSocket(io);
