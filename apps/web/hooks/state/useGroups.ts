@@ -1,14 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 
+interface SenderInfo {
+  id: string;
+  name: string;
+  email: string;
+  profilePic: string;
+}
+
 export type GroupMessageType = {
   id: string;
   body: string;
   memberName: string;
+  role?: Role;
+  sender?: SenderInfo;
   senderId: string;
   groupId?: string;
   createdAt: string;
 };
+
+export type Role = "GUEST" | "ADMIN";
 
 export enum MemberRole {
   ADMIN,

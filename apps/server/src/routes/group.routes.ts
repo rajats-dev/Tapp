@@ -14,5 +14,15 @@ router.get("/joinedGroup", protectRoute, GroupController.joinedGroup);
 router.post("/createGroup", protectRoute, GroupController.createGroup);
 router.post("/joinGroup", protectRoute, GroupController.joinGroup);
 router.delete("/deleteGroup/:id", protectRoute, GroupController.deleteGroup);
+router.delete(
+  "/deleteGroupMessage/:id",
+  protectRoute,
+  GroupController.deleteGroupMessage
+);
+router.get(
+  "/currentMember/:id",
+  protectRoute,
+  GroupController.getCurrentMember
+);
 
 export default router;

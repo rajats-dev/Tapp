@@ -15,7 +15,6 @@ const useFetchGroups = (token: string, enabled?: boolean) => {
       });
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
-      console.log(data);
       setGroupList([...data]); // ✅ Updating state directly
       toast.success("Fetching Groups Successfully");
       return data;

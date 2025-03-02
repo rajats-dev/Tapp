@@ -58,12 +58,6 @@ const ServerGroups = ({
       <div className="ml-auto flex items-center gap-x-2">
         {role !== MemberRole[1] && (
           <div className="ml-auto flex items-center gap-x-2">
-            {/* <ActionTooltip label="Edit">
-              <Edit
-                className="hidden group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400 transition"
-                // onClick={(e) => onAction(e, "editChannel")}
-              />
-            </ActionTooltip> */}
             <ActionTooltip label="Delete">
               <Trash
                 className="hidden group-hover:block w-4 h-4 text-zinc-200 hover:text-zinc-400  transition"

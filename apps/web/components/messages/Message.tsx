@@ -2,6 +2,7 @@ import { MessageType } from "@/hooks/state/useConversation";
 import { extractTime } from "@/lib/helper";
 import { useRef } from "react";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
+import UserAvatar from "@/common/UserAvatar";
 
 const Message = ({
   message,

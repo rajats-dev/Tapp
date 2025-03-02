@@ -30,7 +30,7 @@ export function setupSocket(io: Server) {
   };
 
   const sendGroupMessages = async (payload: any) => {
-    const { senderId, groupId, body, memberName } = payload;
+    const { id, role, senderId, groupId, body, memberName } = payload;
     const member = await getGroupMembers(groupId);
     const memberList = member?.filter(
       (list: any) => list.memberId !== senderId
@@ -44,7 +44,14 @@ export function setupSocket(io: Server) {
       io.to(socketId).emit("recieve-group-message", payload);
     });
 
-    GroupController.sendGroupMessage(senderId, groupId, body, memberName);
+    GroupController.sendGroupMessage(
+      id,
+      role,
+      senderId,
+      groupId,
+      body,
+      memberName
+    );
   };
 
   const disconnect = async (socket: Socket, userId: string) => {

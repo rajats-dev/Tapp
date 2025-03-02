@@ -16,6 +16,7 @@ export type ModalType =
 
 interface ModalData {
   group?: any;
+  messageId?: string;
 }
 
 interface ModalStore {

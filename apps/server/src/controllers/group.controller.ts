@@ -173,6 +173,19 @@ class GroupController {
         where: {
           groupId: id,
         },
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              profilePic: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
       });
 
       if (!messages) {
@@ -183,6 +196,58 @@ class GroupController {
     } catch (error) {
       console.error("Error in getting member: ", error.message);
       res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  static async deleteGroupMessage(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const data = await prisma.groupMessage.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!data) {
+        return res.status(404).json({ message: "Group Message Not Found!" });
+      }
+
+      await prisma.groupMessage.delete({
+        where: {
+          id: id,
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Group Message Deleted Successfully!" });
+    } catch (error) {
+      console.log("Error in creating group", error.message);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  static async getCurrentMember(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const userId = req.user.id;
+
+      const member = await prisma.groupMember.findFirst({
+        where: {
+          groupId: id,
+          memberId: userId,
+        },
+        include: {
+          member: true,
+        },
+      });
+      console.log(member);
+      if (!member) {
+        return res.status(200).json({});
+      }
+
+      return res.status(200).json(member);
+    } catch (error) {
+      console.error("Error in getting member: ", error.message);
     }
   }
 
@@ -204,23 +269,39 @@ class GroupController {
   }
 
   static async sendGroupMessage(
+    id: string,
+    role: MemberRole,
     senderId: string,
     groupId: string,
     body: string,
     memberName: string
   ) {
     try {
-      if (!senderId && !groupId && !body && !memberName) {
+      if (!id && !role && !senderId && !groupId && !body && !memberName) {
         console.log("Value are undefined");
         return;
       }
 
+      // const isAdmin = await prisma.groups.findFirst({
+      //   where: {
+      //     id: groupId,
+      //     groupMember: {
+      //       some: {
+      //         memberId: senderId,
+      //         role: MemberRole.ADMIN,
+      //       },
+      //     },
+      //   },
+      // });
+
       const newMessage = await prisma.groupMessage.create({
         data: {
+          id: id,
           memberName: memberName,
           body: body,
           senderId: senderId,
           groupId: groupId,
+          role: role,
         },
       });
 

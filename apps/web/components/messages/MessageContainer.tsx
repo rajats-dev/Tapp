@@ -5,7 +5,7 @@ import { MessageCircle } from "lucide-react";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
-import useGroups, { type, useType } from "@/hooks/state/useGroups";
+import useGroups, { Role, type, useType } from "@/hooks/state/useGroups";
 import GroupMessages from "./group/GroupMessages";
 
 const MessageContainer = ({ session }: { session: CustomSession }) => {
@@ -14,6 +14,10 @@ const MessageContainer = ({ session }: { session: CustomSession }) => {
   const { selectedType } = useType();
 
   const groupSelected = selectedType == type.Group;
+  // const { data: currentMember } = useCurrentMember(session.user?.token || "");
+
+  const role: Role =
+    selectedGroup?.creatorId == session?.user?.id ? "ADMIN" : "GUEST";
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -30,11 +34,11 @@ const MessageContainer = ({ session }: { session: CustomSession }) => {
           </div>
 
           {groupSelected ? (
-            <GroupMessages session={session} />
+            <GroupMessages session={session} role={role} />
           ) : (
             <Messages session={session} />
           )}
-          <MessageInput session={session} />
+          <MessageInput session={session} role={role} />
         </>
       )}
     </div>

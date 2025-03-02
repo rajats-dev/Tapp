@@ -1,40 +1,28 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { CHAT_URL } from "@/lib/apiAuthRoutes";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 const useGetConversations = (token: string) => {
-  const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState<ConversationType[]>([]);
 
-  useEffect(() => {
-    const getConversations = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`${CHAT_URL}/conversations`, {
-          headers: {
-            Authorization: token,
-          },
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) {
-          throw new Error(data.error);
-        }
-        setConversations(data);
-      } catch (error: any) {
-        toast.error(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  useQuery({
+    queryKey: ["conversations"],
+    queryFn: async () => {
+      const res = await fetch(`${CHAT_URL}/conversations`, {
+        headers: { Authorization: token },
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setConversations(data);
+      toast.success("Fetching Coversation Successfully");
+      return data;
+    },
+    refetchOnWindowFocus: false,
+  });
 
-    getConversations();
-  }, []);
-
-  return { loading, conversations };
+  return { conversations };
 };
 
 export default useGetConversations;

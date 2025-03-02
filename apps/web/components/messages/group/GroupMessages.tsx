@@ -4,8 +4,15 @@ import useChatScroll from "@/hooks/query/useChatScroll";
 import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 import useGroupMessages from "@/hooks/query/useGroupMessages";
 import GroupMessage from "./GroupMessage";
+import { Role } from "@/hooks/state/useGroups";
 
-const GroupMessages = ({ session }: { session: CustomSession }) => {
+const GroupMessages = ({
+  session,
+  role,
+}: {
+  session: CustomSession;
+  role: Role;
+}) => {
   const { loading, groupMessage } = useGroupMessages(session.user?.token || "");
   useListenMessages();
 
@@ -14,12 +21,18 @@ const GroupMessages = ({ session }: { session: CustomSession }) => {
   ) as React.MutableRefObject<HTMLDivElement>;
 
   return (
-    <div className="px-4 flex-1 overflow-auto" ref={ref}>
+    <div className="px-4 flex-1  flex flex-col  overflow-auto" ref={ref}>
       {loading && <MessageSkeleton />}
+      <div className="flex-1"></div>
 
       {!loading &&
         groupMessage.map((message) => (
-          <GroupMessage key={message.id} message={message} session={session} />
+          <GroupMessage
+            key={message.id}
+            currentRole={role}
+            message={message}
+            session={session}
+          />
         ))}
 
       {!loading && groupMessage.length === 0 && (

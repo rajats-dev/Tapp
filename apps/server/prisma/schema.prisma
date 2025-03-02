@@ -82,6 +82,7 @@ model GroupMessage {
   id String @id @default(uuid())
 
   memberName String
+  role       MemberRole @default(GUEST)
 
   groupId String
   group   Groups @relation(fields: [groupId], references: [id], onDelete: Cascade)
