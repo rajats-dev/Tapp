@@ -30,7 +30,7 @@ export const authOptions: AuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       httpOptions: {
-        timeout: 6000, // Increase timeout to 10 seconds
+        timeout: 5000, // Increase timeout to 10 seconds
       },
       authorization: {
         params: {

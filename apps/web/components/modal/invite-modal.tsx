@@ -71,7 +71,7 @@ const InviteModal = () => {
               )}
             </Button>
           </div>
-          <Button
+          {/* <Button
             disabled={loading}
             variant="link"
             size="sm"
@@ -80,7 +80,7 @@ const InviteModal = () => {
           >
             Generate a new link
             <RefreshCw className="w-4 h-4 ml-2" />
-          </Button>
+          </Button> */}
         </div>
       </DialogContent>
     </Dialog>

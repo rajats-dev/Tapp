@@ -106,8 +106,6 @@ class GroupController {
         },
       });
 
-      console.log(guestGroups);
-
       if (!guestGroups) {
         return res.status(200).json([]);
       }

@@ -24,6 +24,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
     password: "",
   });
   const { loading, signup } = useSignUp();
+  const [isLoading, setloading] = useState(false);
 
   const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +32,12 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
   };
 
   const handleGoogleLogin = async () => {
-    signIn("google", {
+    setloading(true);
+    await signIn("google", {
       redirect: true,
       callbackUrl: "/client",
     });
+    setloading(false);
   };
 
   return (
@@ -45,20 +48,8 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
           Use you email or another service to continue
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-2 space-y-4">
-          <Button
-            disabled={false}
-            onClick={handleGoogleLogin}
-            variant="outline"
-            size="lg"
-            className="w-full relative"
-          >
-            <FcGoogle className="size-5 absolute left-2" />
-            Continue with Google
-          </Button>
-        </div>
-        <form onSubmit={handleSubmitForm}>
+      <CardContent className="flex flex-col gap-2">
+        <form onSubmit={handleSubmitForm} className="flex flex-col gap-2">
           <Input
             disabled={false}
             value={inputs.name}
@@ -83,21 +74,34 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
             type="password"
             required
           />
-          <Button type="submit" size="lg" disabled={loading} className="w-full">
+
+          <Button type="submit" size="lg" disabled={loading}>
             Continue
           </Button>
-          <div>
-            <p className="text-sm text-muted-foreground pt-10">
-              Already have an account?{" "}
-              <span
-                className="text-sky-700 hover:underline cursor-pointer"
-                onClick={() => setState("signIn")}
-              >
-                Sign in
-              </span>
-            </p>
-          </div>
         </form>
+
+        <Button
+          disabled={isLoading}
+          onClick={handleGoogleLogin}
+          variant="outline"
+          size="lg"
+          className="w-full relative"
+        >
+          <FcGoogle className="size-5 absolute left-2" />
+          Continue with Google
+        </Button>
+
+        <div>
+          <p className="text-sm text-muted-foreground pt-10">
+            Already have an account?{" "}
+            <span
+              className="text-sky-700 hover:underline cursor-pointer"
+              onClick={() => setState("signIn")}
+            >
+              Sign in
+            </span>
+          </p>
+        </div>
       </CardContent>
     </Card>
   );

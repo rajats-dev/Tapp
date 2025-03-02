@@ -35,7 +35,7 @@ const Sidebar = ({ session }: { session: CustomSession }) => {
       {status == "pending" ? (
         <Loader />
       ) : status == "success" ? (
-        groupList?.length > 0 ? (
+        groupList && groupList?.length > 0 ? (
           <div className="mb-2">
             <div className="space-y-[2px]">
               {groupList?.map((grp, index) => (
