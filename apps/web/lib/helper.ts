@@ -1,11 +1,8 @@
-export function extractTime(dateString: string) {
-  const date = new Date(dateString);
-  const hours = padZero(date.getHours());
-  const minutes = padZero(date.getMinutes());
-  return `${hours}:${minutes}`;
-}
+import { format } from "date-fns";
 
-// Helper function to pad single-digit numbers with a leading zero
-function padZero(number: number) {
-  return number.toString().padStart(2, "0");
+const DATE_FORMAT = "d MMM yyyy, HH:mm";
+
+export function extractTime(dateString: string) {
+  const string = format(new Date(dateString), DATE_FORMAT);
+  return string;
 }

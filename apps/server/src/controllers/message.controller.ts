@@ -72,6 +72,16 @@ class MessageController {
         },
         include: {
           messages: {
+            include: {
+              sender: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                  profilePic: true,
+                },
+              },
+            },
             orderBy: {
               createdAt: "asc",
             },

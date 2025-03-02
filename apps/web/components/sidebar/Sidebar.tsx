@@ -20,8 +20,6 @@ const Sidebar = ({ session }: { session: CustomSession }) => {
   );
   const { refetchJoined } = useJoinedGroups(token, token !== undefined);
 
-  // console.log(groupList);
-
   return (
     <div className="h-full flex flex-col w-full  dark:bg-[#121a27b1] bg-[#F2F3F5] px-3">
       <SearchInput conversations={conversations} />
@@ -36,16 +34,20 @@ const Sidebar = ({ session }: { session: CustomSession }) => {
 
       {status == "pending" ? (
         <Loader />
-      ) : groupList?.length > 0 ? (
-        <div className="mb-2">
-          <div className="space-y-[2px]">
-            {groupList?.map((grp, index) => (
-              <ServerGroups group={grp} key={index} session={session} />
-            ))}
+      ) : status == "success" ? (
+        groupList?.length > 0 ? (
+          <div className="mb-2">
+            <div className="space-y-[2px]">
+              {groupList?.map((grp, index) => (
+                <ServerGroups group={grp} key={index} session={session} />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="mx-auto my-2 text-sm">No Groups Available</div>
+        )
       ) : (
-        <div className="mx-auto my-2 text-sm">No Groups Available</div>
+        <></>
       )}
       <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-4" />
       {!conversations ? (

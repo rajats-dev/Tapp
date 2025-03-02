@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import useGroups from "../state/useGroups";
 import { GROUP_URL } from "@/lib/apiAuthRoutes";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -36,26 +35,6 @@ const useGroupMessages = (token: string) => {
 
     getMessages();
   }, [selectedGroup, setGroupMessage]);
-
-  // useQuery({
-  //   queryKey: ["groupMessage", selectedGroup?.id], // Depend on selectedGroup.id
-  //   queryFn: async () => {
-  //     if (!selectedGroup) return [];
-  //     setLoading(true);
-  //     setGroupMessage([]); // Reset messages before fetching
-  //     const res = await fetch(
-  //       `${GROUP_URL}/fetchGroupMessage/${selectedGroup.id}`,
-  //       { headers: { Authorization: token }, credentials: "include" }
-  //     );
-  //     if (!res.ok) throw new Error("Failed to fetch");
-  //     const data = await res.json();
-  //     setGroupMessage(data);
-  //     setLoading(false);
-  //     return data;
-  //   },
-  //   enabled: !!selectedGroup, // Ensure the query runs only when selectedGroup is not null
-  //   refetchOnWindowFocus: false,
-  // });
 
   return { groupMessage, loading };
 };

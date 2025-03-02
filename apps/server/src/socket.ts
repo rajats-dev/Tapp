@@ -22,7 +22,7 @@ export function setupSocket(io: Server) {
     const { senderId, receiverId, body } = data;
 
     const receiverSocketId = await getReceiverSocketId(receiverId);
-    console.log("----", receiverSocketId);
+    // console.log("----", receiverSocketId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", data);
     }

@@ -73,6 +73,12 @@ const MessageInput = ({
         id: uuidv4(),
         body: values.content,
         senderId: session.user?.id || "",
+        sender: {
+          id: uuidv4(),
+          name: session?.user?.name || "",
+          email: session.user?.email || "",
+          profilePic: session.user?.image || "",
+        },
         receiverId: selectedConversation?.id,
         createdAt: new Date().toISOString(),
       };

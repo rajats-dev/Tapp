@@ -3,8 +3,6 @@ import { Request, Response } from "express";
 import prisma from "../config/db.config.js";
 import { v4 as uuidv4 } from "uuid";
 
-export let member;
-
 class GroupController {
   static async createGroup(req: Request, res: Response) {
     try {
@@ -96,7 +94,15 @@ class GroupController {
           },
         },
         include: {
-          groupMember: true, // Include members if needed
+          groupMember: {
+            include: {
+              member: {
+                select: {
+                  profilePic: true,
+                },
+              },
+            },
+          }, // Include members if needed
         },
       });
 
@@ -147,6 +153,13 @@ class GroupController {
         },
         include: {
           groupMember: {
+            include: {
+              member: {
+                select: {
+                  profilePic: true,
+                },
+              },
+            },
             orderBy: {
               createdAt: "asc",
             },

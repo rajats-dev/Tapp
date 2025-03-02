@@ -1,12 +1,19 @@
 import { create } from "zustand";
 
+interface SenderInfo {
+  id: string;
+  name: string;
+  email: string;
+  profilePic: string;
+}
+
 export type MessageType = {
   id: string;
   body: string;
   senderId: string;
+  sender: SenderInfo;
   createdAt: string;
   receiverId?: string;
-  //   shouldShake?: boolean;
 };
 
 interface ConversationState {
