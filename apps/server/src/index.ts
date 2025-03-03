@@ -2,7 +2,6 @@ import express, { Application, Request, Response } from "express";
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import groupRoutes from "./routes/group.routes.js";
-
 import cookieParser from "cookie-parser";
 import "dotenv/config";
 import cors from "cors";
