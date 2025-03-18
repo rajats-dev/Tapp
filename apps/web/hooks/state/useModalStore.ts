@@ -1,18 +1,6 @@
 import { create } from "zustand";
 
-export type ModalType =
-  | "createGroup"
-  | "deleteGroup"
-  | "invite"
-  //
-  | "createServer"
-  | "editServer"
-  | "members"
-  | "leaveServer"
-  | "deleteServer"
-  | "editChannel"
-  | "messageFile"
-  | "deleteMessage";
+export type ModalType = "createGroup" | "deleteGroup" | "invite" | "auth";
 
 interface ModalData {
   group?: any;

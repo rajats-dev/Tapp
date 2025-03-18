@@ -41,14 +41,14 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
   };
 
   return (
-    <Card>
+    <div>
       <CardHeader>
         <CardTitle>Sign up to continue</CardTitle>
         <CardDescription>
           Use you email or another service to continue
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
+      <CardContent className="flex flex-col gap-2 p-3 pt-0">
         <form onSubmit={handleSubmitForm} className="flex flex-col gap-2">
           <Input
             disabled={false}
@@ -103,7 +103,7 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
           </p>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 };
 

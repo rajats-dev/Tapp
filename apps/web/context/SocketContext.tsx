@@ -7,7 +7,6 @@ import {
   ReactNode,
   useRef,
 } from "react";
-import { useAuthContext } from "./AuthContext";
 import io, { Socket } from "socket.io-client";
 import Env from "@/lib/env";
 import { useSession } from "next-auth/react";
@@ -35,9 +34,9 @@ const socketURL = Env.BACKEND_URL;
 
 const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const { data } = useSession();
+  const session: CustomSession | null = data;
   const socketRef = useRef<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-  const session: CustomSession | null = data;
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -62,7 +61,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
         socketRef.current = null;
       }
     }
-  }, [session]);
+  }, [session?.user?.id]);
 
   return (
     <SocketContext.Provider value={{ socket: socketRef.current, onlineUsers }}>

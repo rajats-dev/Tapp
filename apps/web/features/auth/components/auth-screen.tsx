@@ -8,7 +8,7 @@ const AuthScreen = () => {
 
   return (
     <div className="h-full flex items-center justify-center">
-      <div className="h-auto md:w-[420px]">
+      <div>
         {pageState == "signIn" ? (
           <SignInCard setState={setPageState} />
         ) : (

@@ -44,14 +44,14 @@ const SignInCard = ({ setState }: SignInCardProps) => {
   };
 
   return (
-    <Card className="w-full">
+    <div className="w-full">
       <CardHeader>
         <CardTitle>Login to continue</CardTitle>
         <CardDescription>
           Use you email or another service to continue
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-5 px-0 pb-0">
+      <CardContent className="space-y-4 px-0 pb-0 p-3 pt-0">
         <form className="flex flex-col gap-2" onSubmit={handleSubmitForm}>
           <Input
             disabled={false}
@@ -86,7 +86,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
           </div>
         </form>
       </CardContent>
-    </Card>
+    </div>
   );
 };
 
