@@ -1,3 +1,8 @@
+// Using import
+import { dotenvLoad } from "dotenv-mono";
+const dotenv = dotenvLoad(); // Dotenv instance
+dotenv.load();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {

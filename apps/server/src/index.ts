@@ -10,6 +10,10 @@ import { Server } from "socket.io";
 import { setupSocket } from "./socket.js";
 import redis from "./config/redis.config.js";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
+import { dotenvLoad } from "dotenv-mono";
+
+const dotenv = dotenvLoad(); // Dotenv instance
+dotenv.load();
 
 const app: Application = express();
 const PORT = process.env.PORT || 7000;
