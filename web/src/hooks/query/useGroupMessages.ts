@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import useGroups from "../state/useGroups";
 import { GROUP_URL } from "@/lib/apiAuthRoutes";

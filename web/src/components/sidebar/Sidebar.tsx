@@ -8,8 +8,8 @@ import { CustomSession } from "@/app/api/auth/[...nextauth]/options";
 import ServerSection from "../groups/server-section";
 import ServerGroups from "../groups/server-group";
 import useFetchGroups from "@/hooks/query/useFetchGroups";
-import Loader from "../ui/loader";
 import useJoinedGroups from "@/hooks/query/useJoinedGroups";
+import Loader from "../loader";
 
 const Sidebar = ({ session }: { session: CustomSession }) => {
   const token = session?.user?.token || "";

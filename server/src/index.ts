@@ -3,7 +3,6 @@ import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import groupRoutes from "./routes/group.routes.js";
 import cookieParser from "cookie-parser";
-import "dotenv/config";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -11,12 +10,14 @@ import { setupSocket } from "./socket.js";
 import redis from "./config/redis.config.js";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
 import { dotenvLoad } from "dotenv-mono";
+import path from "path";
 
 const dotenv = dotenvLoad(); // Dotenv instance
 dotenv.load();
 
 const app: Application = express();
 const PORT = process.env.PORT || 7000;
+const __dirname = path.resolve();
 
 // * Middleware
 app.use(

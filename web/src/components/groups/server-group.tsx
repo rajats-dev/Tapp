@@ -7,6 +7,7 @@ import { ModalType, useModal } from "@/hooks/state/useModalStore";
 import useGroups, {
   GroupListData,
   MemberRole,
+  Role,
   type,
   useType,
 } from "@/hooks/state/useGroups";
@@ -29,7 +30,7 @@ const ServerGroups = ({
     onOpen(action, { group });
   };
 
-  const role: MemberRole | undefined = group?.groupMember?.find(
+  const role: Role | undefined = group?.groupMember?.find(
     (member) => member.memberId === session?.user?.id
   )?.role;
 

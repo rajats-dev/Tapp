@@ -45,8 +45,8 @@ export default function RootLayout({
               </QueryProvider>
             </ThemeProvider>
           </SocketContextProvider>
+          <Toaster />
         </body>
-        {/* <Toaster /> */}
       </SessionProvider>
     </html>
   );

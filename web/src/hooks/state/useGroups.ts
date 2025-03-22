@@ -37,7 +37,7 @@ export interface GroupListData {
 
 export interface GroupMember {
   id: string;
-  role?: MemberRole;
+  role?: Role;
   memberId: string;
   groupId: string;
   createdAt: string;
